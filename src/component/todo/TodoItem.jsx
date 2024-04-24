@@ -16,7 +16,7 @@ export default function Todo({
     if (todoItem !== "") {
     
       todo.title=todoItem;
-      EditToDoItem()
+      EditToDoItem
       setEditMode(false);
     }
   };

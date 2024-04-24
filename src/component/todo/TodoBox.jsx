@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useReducer, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 import Box from "../base/Box";
 import Input from "../base/Input";
 import Todo from "./TodoItem";
 import TodoList from "./TodoList";
+import todoReducer from "../../reducer/todoReducer";
 
 export default function TodoBox() {
-  const [todoList, setTodoList] = useState([]);
+  const [todoList, todoListDispatcher] = useReducer(todoReducer, []);
   const [todoItem, setTodoItem] = useState("");
   const myref = useRef("Hello Armaghan");
 
@@ -31,7 +32,13 @@ export default function TodoBox() {
         let todoData = await res.json();
 
         if (todoData !== null) {
-          setTodoList((current) => [...current, todoData]);
+          todoListDispatcher({
+            type: "add",
+            id: todoList.length + 1,
+            title: todoItem,
+            status: false,
+          });
+
           setTodoItem("");
           toast.success("Create todos succesfully");
         }
@@ -53,11 +60,11 @@ export default function TodoBox() {
         method: "DELETE",
       });
       if (res.ok) {
-        let newList = todoList.filter((todoItem) => {
-          return todo.id != todoItem.id;
+        todoListDispatcher({
+          type: "delete",
+          id: todo.id,
         });
 
-        setTodoList(newList);
         toast.success("Removed todos succesfully");
       } else {
         toast.error("Error in Removed todos ! ");
@@ -79,14 +86,11 @@ export default function TodoBox() {
         body: JSON.stringify({ status: !todo.status }),
       });
       if (res.ok) {
-        let newTodo = todoList.map((item) => {
-          if (item.id === todo.id) {
-            item.status = !todo.status;
-          }
-          return item;
+        todoListDispatcher({
+          type: "changestatus",
+          id: todo.id,
         });
 
-        setTodoList(newTodo);
         toast.success("status changed succesfully");
       } else {
         toast.error("Error in change status ");
@@ -108,14 +112,11 @@ export default function TodoBox() {
         body: JSON.stringify({ title: todo.title }),
       });
       if (res.ok) {
-        // let newList = todoList.filter((todoItem) => {
-        //   if (todo.id === todoItem.id) {
-        //     todoItem.title = todo.item;
-        //   }
-        //   return;
-        // });
-
-        // setTodoList(newList);
+        todoListDispatcher({
+          type: "update",
+          id: todo.id,
+          title: todo.title,
+        });
         toast.success("Edit Todos succesfully");
       } else {
         toast.error("Error in Edit Todos ");
@@ -132,7 +133,11 @@ export default function TodoBox() {
       let res = await fetch(url);
       if (res.ok) {
         let todos = await res.json();
-        setTodoList(todos);
+
+        todoListDispatcher({
+          type: "initial-todos",
+          todoData: todos,
+        });
       }
     } catch (error) {
       console.log(error);

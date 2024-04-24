@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 import Box from "../base/Box";
 import Input from "../base/Input";
@@ -26,12 +27,16 @@ export default function TodoBox() {
           body: JSON.stringify(data),
         }
       );
+      if (res.ok) {
+        let todoData = await res.json();
 
-      let todoData = await res.json();
-
-      if (todoData !== null) {
-        setTodoList((current) => [...current, todoData]);
-        setTodoItem("");
+        if (todoData !== null) {
+          setTodoList((current) => [...current, todoData]);
+          setTodoItem("");
+          toast.success("Create todos succesfully");
+        }
+      } else {
+        toast.error("Error in Create todos ! ");
       }
     } catch (error) {
       console.log(error);
@@ -41,7 +46,7 @@ export default function TodoBox() {
   const RemoveTodoItem = async (todo) => {
     try {
       const url = new URL(
-        "https://66278bb9b625bf088c08bffe.mockapi.io/todos/" + todo?.id
+        `https://66278bb9b625bf088c08bffe.mockapi.io/todos/${todo?.id}`
       );
 
       let res = await fetch(url, {
@@ -53,6 +58,9 @@ export default function TodoBox() {
         });
 
         setTodoList(newList);
+        toast.success("Removed todos succesfully");
+      } else {
+        toast.error("Error in Removed todos ! ");
       }
     } catch (error) {
       console.log(error);
@@ -62,7 +70,7 @@ export default function TodoBox() {
   const ChangeStatusHandler = async (todo) => {
     try {
       const url = new URL(
-        "https://66278bb9b625bf088c08bffe.mockapi.io/todos/" + todo?.id
+        `https://66278bb9b625bf088c08bffe.mockapi.io/todos/${todo?.id}`
       );
 
       let res = await fetch(url, {
@@ -79,6 +87,9 @@ export default function TodoBox() {
         });
 
         setTodoList(newTodo);
+        toast.success("status changed succesfully");
+      } else {
+        toast.error("Error in change status ");
       }
     } catch (error) {
       console.log(error);
@@ -88,7 +99,7 @@ export default function TodoBox() {
   const EditTodoItem = async (todo) => {
     try {
       const url = new URL(
-        "https://66278bb9b625bf088c08bffe.mockapi.io/todos/" + todo?.id
+        `https://66278bb9b625bf088c08bffe.mockapi.io/todos/${todo?.id}`
       );
 
       let res = await fetch(url, {
@@ -97,14 +108,17 @@ export default function TodoBox() {
         body: JSON.stringify({ title: todo.title }),
       });
       if (res.ok) {
-        let newList = todoList.filter((todoItem) => {
-          if (todo.id === todoItem.id) {
-            todoItem.title = todo.item;
-          }
-          return;
-        });
+        // let newList = todoList.filter((todoItem) => {
+        //   if (todo.id === todoItem.id) {
+        //     todoItem.title = todo.item;
+        //   }
+        //   return;
+        // });
 
-        setTodoList(newList);
+        // setTodoList(newList);
+        toast.success("Edit Todos succesfully");
+      } else {
+        toast.error("Error in Edit Todos ");
       }
     } catch (error) {
       console.log(error);

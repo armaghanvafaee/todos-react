@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {  useEffect,useState } from "react";
 import CheckBox from "../base/CheckBox";
 import EditButton from "../base/EditButton";
 import Input from "../base/Input";
@@ -16,10 +16,22 @@ export default function Todo({
     if (todoItem !== "") {
     
       todo.title=todoItem;
-      EditToDoItem
+      EditToDoItem()
       setEditMode(false);
     }
   };
+   
+  // useEffect(()=>{
+
+  //   console.log(`the component created! => ${todo.title}`);
+
+  //   return()=>{
+  //     console.log(`the component deleted! => ${todo.title}`);
+
+  //   }
+    
+  //     },[])
+
 
   return (
     <>

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import Box from "../base/Box";
 import Input from "../base/Input";
-import Todo from "./TodoItem";
+import TodoItem from "./TodoItem";
 import TodoList from "./TodoList";
 
 export default function TodoBoxWithLocalStorage() {
@@ -81,7 +81,7 @@ export default function TodoBoxWithLocalStorage() {
         />
         <TodoList>
           {todoList.map((todo, index) => (
-            <Todo
+            <TodoItem
               key={index}
               todo={todo}
               RemoveTodoItem={RemoveTodoItem.bind(this, todo)}

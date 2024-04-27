@@ -26,10 +26,11 @@ export default function todoReducer(todoList, action) {
       });
 
     case "update":
-      return todoList.filter((todoItem) => {
+      return todoList.map((todoItem) => {
         if (action.id === todoItem.id) {
-          todoItem.title = action.item;
+          todoItem.title = action.title;
         }
+        return todoItem;
      
       });
 

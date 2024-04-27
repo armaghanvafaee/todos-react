@@ -16,6 +16,7 @@ export default function Input({ value,placeholder , onKeyDown,onChange}) {
             (e)=>{
               if(e.key==="Enter" ){
                 onKeyDown();
+                
               }
           
             }

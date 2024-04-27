@@ -13,9 +13,6 @@ export default function TodoItem() {
   const [editMode, setEditMode] = useState(false);
   const [todoItem, setTodoItem] = useState(todo?.title);
 
-
-
-
   const RemoveTodoItem = async (todo) => {
     try {
       console.log(todo);
@@ -60,7 +57,6 @@ export default function TodoItem() {
           title: todo.title,
         });
 
-      
         toast.success("Edit Todos succesfully");
       } else {
         toast.error("Error in Edit Todos ");
@@ -72,7 +68,7 @@ export default function TodoItem() {
 
   const OnKeyDown = () => {
     if (todoItem !== "") {
-      console.log(todoItem)
+      console.log(todoItem);
       todo.title = todoItem;
       EditTodoItem(todo);
       setEditMode(false);
@@ -105,7 +101,6 @@ export default function TodoItem() {
     }
   };
 
-
   // useEffect(()=>{
 
   //   console.log(`the component created! => ${todo.title}`);
@@ -135,9 +130,8 @@ export default function TodoItem() {
         ) : (
           <div className="w-full flex items-center">
             <CheckBox
-              text={todo?.title}
-              status={todo?.status}
-              OnchangeHandler={()=>ChangeStatusHandler(todo)}
+              todo={todo}
+              OnchangeHandler={() => ChangeStatusHandler(todo)}
             />
             <button
               type="button"
